@@ -51,7 +51,7 @@ final class Grapheme
 
         if (!\is_scalar($s)) {
             $hasError = false;
-            set_error_handler(function () use (&$hasError) { $hasError = true; });
+            set_error_handler(function () use (&$hasError): void { $hasError = true; });
             $next = substr($s, $start);
             restore_error_handler();
             if ($hasError) {
@@ -112,14 +112,14 @@ final class Grapheme
         return $ret;
     }
 
-    public static function grapheme_strlen($s)
+    public static function grapheme_strlen($s): ?int
     {
         preg_replace('/'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', '', $s, -1, $len);
 
         return 0 === $len && '' !== $s ? null : $len;
     }
 
-    public static function grapheme_substr($s, $start, $len = null)
+    public static function grapheme_substr(array $s, $start, $len = null)
     {
         if (null === $len) {
             $len = 2147483647;
@@ -223,7 +223,7 @@ final class Grapheme
         return $chunks;
     }
 
-    private static function grapheme_position($s, $needle, $offset, $mode)
+    private static function grapheme_position($s, $needle, $offset, int $mode)
     {
         $needle = (string) $needle;
         if (80000 > \PHP_VERSION_ID && !preg_match('/./us', $needle)) {
