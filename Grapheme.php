@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony package.
  *
@@ -51,7 +53,9 @@ final class Grapheme
 
         if (!\is_scalar($s)) {
             $hasError = false;
-            set_error_handler(function () use (&$hasError): void { $hasError = true; });
+            set_error_handler(function () use (&$hasError): void {
+                $hasError = true;
+            });
             $next = substr($s, $start);
             restore_error_handler();
             if ($hasError) {
